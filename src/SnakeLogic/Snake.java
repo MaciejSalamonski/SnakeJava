@@ -26,6 +26,14 @@ public class Snake {
 		AddSnakeBodyComponent();
 	}
 	
+	public Snake(int coordX, int coordY) {
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.rectangleSize = 10;
+		this.color = Color.blue;
+		AddSnakeBodyComponent();
+	}
+	
 	public void AddSnakeBodyComponent() {
 		SnakeBody snakeBodyPart = new SnakeBody(coordX, coordY, rectangleSize, color);
 		this.snakeBody.add(snakeBodyPart);
