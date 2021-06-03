@@ -27,35 +27,9 @@ public class WallsHandler {
 	
 	public WallsHandler(int wallsNumber) {
 		SetWallsNumber(wallsNumber);
-		
 		SetCoordsX(new ArrayList<Integer>());
 		SetCoordsY(new ArrayList<Integer>());
 		SetWallsList(new ArrayList<Walls>());
-	}
-	
-	public void GenerateRandomWalls() {
-		if(GetWallsList().size() == 0) {
-			int coordX;
-			int coordY;
-			Walls wall;
-			
-			for(int index = 0; index < GetWallsNumber(); index++) {
-				int rectangleSize = 10;
-				int drawMaximumNumber = 35;
-				
-				SetRandomNumber(new Random());
-				coordX = GetRandomNumber().nextInt(drawMaximumNumber);
-				coordY = GetRandomNumber().nextInt(drawMaximumNumber);
-				
-				GetCoordsX().add(coordX);
-				GetCoordsY().add(coordY);
-				
-				wall = new Walls(coordX, coordY, rectangleSize);
-				GetWallsList().add(wall);
-			}
-			
-			GenerateBoarders();
-		}
 	}
 	
 	public void GenerateBoarders() {
@@ -89,19 +63,28 @@ public class WallsHandler {
 		}
 	}
 	
-	public boolean GameFrame(Snake snake) {
-		for(int index = 0; index < GetWallsList().size(); index++) {
-			if(GetWallsList().get(index).CheckCollision(snake.GetCoordX(), snake.GetCoordY())) {
-				return true;
+	public void GenerateRandomWalls() {
+		if(GetWallsList().size() == 0) {
+			int coordX;
+			int coordY;
+			Walls wall;
+			
+			for(int index = 0; index < GetWallsNumber(); index++) {
+				int rectangleSize = 10;
+				int drawMaximumNumber = 35;
+				
+				SetRandomNumber(new Random());
+				coordX = GetRandomNumber().nextInt(drawMaximumNumber);
+				coordY = GetRandomNumber().nextInt(drawMaximumNumber);
+				
+				GetCoordsX().add(coordX);
+				GetCoordsY().add(coordY);
+				
+				wall = new Walls(coordX, coordY, rectangleSize);
+				GetWallsList().add(wall);
 			}
-		}
-		
-		return false;
-	}
-
-	public void DrawWallsComponents(Graphics component) {
-		for(int index = 0; index < GetWallsList().size(); index++) {
-			GetWallsList().get(index).DrawComponent(component);
+			
+			GenerateBoarders();
 		}
 	}
 	
@@ -123,5 +106,21 @@ public class WallsHandler {
 		}
 		
 		return false;
+	}
+	
+	public boolean GameFrame(Snake snake) {
+		for(int index = 0; index < GetWallsList().size(); index++) {
+			if(GetWallsList().get(index).CheckCollision(snake.GetCoordX(), snake.GetCoordY())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	public void DrawWallsComponents(Graphics component) {
+		for(int index = 0; index < GetWallsList().size(); index++) {
+			GetWallsList().get(index).DrawComponent(component);
+		}
 	}
 }

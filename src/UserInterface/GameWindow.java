@@ -1,4 +1,5 @@
 package UserInterface;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -6,11 +7,14 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+
 import javax.swing.JPanel;
 import SnakeLogic.Snake;
 import ComponentsHandlers.AppleHandler;
 import ComponentsHandlers.FrogHandler;
 import ComponentsHandlers.WallsHandler;
+import FileHandler.FileHandler;
 
 public class GameWindow extends JPanel implements Runnable {
 	public final int width_ = 400;
@@ -22,9 +26,9 @@ public class GameWindow extends JPanel implements Runnable {
 	private Snake snakePlayer_;
 	private Key pressedKey_;
 	private AppleHandler appleHandler_;
+	private FileHandler fileHandler_;
 	private FrogHandler frogHandler_;
 	private WallsHandler wallsHandler_;
-	
 	
 	public int GetWidth() { return width_; }
 	public int GetHeight() { return height_; }
@@ -35,6 +39,7 @@ public class GameWindow extends JPanel implements Runnable {
 	public Snake GetSnakePlayer() { return snakePlayer_; }
 	public Key GetPressedKey() { return pressedKey_; }
 	public AppleHandler GetAppleHandler() { return appleHandler_; }
+	public FileHandler GetFileHandler() { return fileHandler_; }
 	public FrogHandler GetFrogHandler() { return frogHandler_; }
 	public WallsHandler GetWallsHandler() { return wallsHandler_; }
 	
@@ -45,6 +50,7 @@ public class GameWindow extends JPanel implements Runnable {
 	public void SetSnakePlayer(Snake snakePlayer) { snakePlayer_ = snakePlayer; }
 	public void SetPressedKey(Key pressedKey) { pressedKey_ = pressedKey; }
 	public void SetAppleHandler(AppleHandler appleHandler) { appleHandler_ = appleHandler; }
+	public void SetFileHandler(FileHandler fileHandler) { fileHandler_ = fileHandler; }
 	public void SetFrogHandler(FrogHandler frogHandler) { frogHandler_ = frogHandler;}
 	public void SetWallsHandler(WallsHandler wallsHandler) { wallsHandler_ = wallsHandler; }
 	
@@ -66,11 +72,13 @@ public class GameWindow extends JPanel implements Runnable {
 		GetWallsHandler().GenerateRandomWalls();
 		SetFrogHandler(new FrogHandler());
 		SetAppleHandler(new AppleHandler());
+		SetFileHandler(new FileHandler("BestResult.txt"));
 		
 		GetFrogHandler().GenerateFrog(GetWallsHandler().GetCoordsX(), GetWallsHandler().GetCoordsY());
 		GetAppleHandler().GenerateApple(GetWallsHandler().GetCoordsX(), GetWallsHandler().GetCoordsY());
 		SetGameState(true);
 		SetThread(new Thread(this, "Main Loop"));
+		SetBestResult(GetFileHandler().ReadBestResultFromFile());
 		GetThread().start();
 	}
 	
@@ -78,31 +86,8 @@ public class GameWindow extends JPanel implements Runnable {
 		SetGameState(false);
 		
 		GetAppleHandler().StopAppleHandlerThread();
-		GetFrogHandler().StartFrogHandlerThread();
-	}
-	
-	public void run() {
-		while(GetGameState()) {
-			GameFrame();
-			repaint();
-		}
-	}
-	
-	public void paint(Graphics component) {
-		if(GetGameState()) {
-			DrawBackground(component);
-			GetSnakePlayer().DrawSnakeBody(component);
-			GetAppleHandler().DrawApple(component);
-			GetWallsHandler().DrawWallsComponents(component);
-			GetFrogHandler().DrawFrog(component);
-		} else {
-			ShowBestResult(component);
-		}
-	}
-	
-	private void DrawBackground(Graphics component) { 
-		component.clearRect(0, 0, GetWidth(), GetHeight());
-		component.fillRect(0, 0, GetWidth(), GetHeight());
+		GetFrogHandler().StopFrogHandlerThread();
+		GetFileHandler().StopFileHandlerThread();
 	}
 	
 	private void GameFrame() {
@@ -128,6 +113,26 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 	
+	public void run() {
+		while(GetGameState()) {
+			GameFrame();
+			repaint();
+		}
+	}
+	
+	private void DrawBackground(Graphics component) { 
+		component.clearRect(0, 0, GetWidth(), GetHeight());
+		component.fillRect(0, 0, GetWidth(), GetHeight());
+	}
+	
+	private void WriteBestResultToFile() {
+		try {
+			GetFileHandler().WriteBestResultToFile(GetBestResult());
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
+	}
+	
 	private void ShowBestResult(Graphics component) {
 		int bestResultHeight = 220;
 		int bigFontSize = 30;
@@ -138,11 +143,12 @@ public class GameWindow extends JPanel implements Runnable {
 		int restartGameHeight = 320;
 		int smallFontSize = 22;
 		int startPosition = 200;
+		int playerResult = (GetSnakePlayer().GetSnakeBody().size() - 1);
 		String gameOverMessage = "Game Over!";
 		String newRecordMessage = "New Record!";
-		String bestResultMessage = "Best result: " + (GetBestResult() - 1);
+		String bestResultMessage = "Best result: " + (GetBestResult());
 		String restartGameMessage = "Press Space to restart";
-		String playerResult = "Your result: " + (GetSnakePlayer().GetSnakeBody().size() - 1);
+		String playerResultMessage = "Your result: " + playerResult;
 		
 		Font bigFont = new Font("TIMES_NEW_ROMAN", Font.BOLD, bigFontSize);
 		Font smallFont = new Font("TIMES_NEW_ROMAN", Font.BOLD, smallFontSize);
@@ -152,19 +158,31 @@ public class GameWindow extends JPanel implements Runnable {
 		component.setColor(Color.WHITE);
 		component.setFont(bigFont);
 		
-		if(GetSnakePlayer().GetSnakeBody().size() > GetBestResult()) {
+		if(playerResult  > GetBestResult()) {
 			component.drawString(gameOverMessage, startPosition - (metrices.stringWidth(gameOverMessage) / centerAlignment), gameOverHeight);
 			component.drawString(newRecordMessage, startPosition - (metrices.stringWidth(newRecordMessage) / centerAlignment), newRecordHeight);
-			SetBestResult(GetSnakePlayer().GetSnakeBody().size());
+			SetBestResult(playerResult);
+			WriteBestResultToFile();	
 		} else {
 			component.drawString(gameOverMessage, startPosition - (metrices.stringWidth(gameOverMessage) / centerAlignment), gameOverHeight);
 		}
 		
 		component.setFont(smallFont);
-		component.drawString(bestResultMessage, startPosition - secondMetrices.stringWidth(playerResult) / centerAlignment, bestResultHeight);
-		component.drawString(playerResult, startPosition - secondMetrices.stringWidth(playerResult) / centerAlignment, playerResultHeight);
+		component.drawString(bestResultMessage, startPosition - secondMetrices.stringWidth(playerResultMessage) / centerAlignment, bestResultHeight);
+		component.drawString(playerResultMessage, startPosition - secondMetrices.stringWidth(playerResultMessage) / centerAlignment, playerResultHeight);
 		component.drawString(restartGameMessage, startPosition - secondMetrices.stringWidth(restartGameMessage) / centerAlignment, restartGameHeight);
-
+	}
+	
+	public void paint(Graphics component) {
+		if(GetGameState()) {
+			DrawBackground(component);
+			GetSnakePlayer().DrawSnakeBody(component);
+			GetAppleHandler().DrawApple(component);
+			GetWallsHandler().DrawWallsComponents(component);
+			GetFrogHandler().DrawFrog(component);
+		} else {
+			ShowBestResult(component);
+		}
 	}
 	
 	private class Key implements KeyListener {

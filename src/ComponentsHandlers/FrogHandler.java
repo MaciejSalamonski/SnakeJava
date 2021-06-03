@@ -64,17 +64,6 @@ public class FrogHandler {
 		}
 	}
 	
-	public void GameFrame(Snake snake) {
-		if(GetFrog().CheckCollision(snake.GetCoordX(), snake.GetCoordY())) {
-			snake.AddSnakeBodyComponent();
-			SetFrogAlive(false);
-		}
-	}
-	
-	public void DrawFrog(Graphics component) {
-		GetFrog().DrawComponent(component);
-	}
-	
 	private boolean CheckWallsCollision(int coordX, int coordY, WallsHandler walls) {
 		return walls.CheckCollision(coordX, coordY);
 	}
@@ -87,7 +76,7 @@ public class FrogHandler {
 		
 		return false;
 	}
-
+	
 	private int GetRandomCoordinate() {
 		int beginRange = 0;
 		int endRange = 6;
@@ -120,5 +109,16 @@ public class FrogHandler {
 		if(!snake.CheckCollision(coordX, coordY) && !CheckCollision(coordX, coordY, walls)) {
 			GetFrog().Move(coordX, coordY);
 		}
+	}
+	
+	public void GameFrame(Snake snake) {
+		if(GetFrog().CheckCollision(snake.GetCoordX(), snake.GetCoordY())) {
+			snake.AddSnakeBodyComponent();
+			SetFrogAlive(false);
+		}
+	}
+	
+	public void DrawFrog(Graphics component) {
+		GetFrog().DrawComponent(component);
 	}
 }
