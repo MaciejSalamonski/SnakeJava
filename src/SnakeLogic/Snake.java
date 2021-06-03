@@ -6,95 +6,118 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Snake {
-
-	public SnakeBody snakeBodyPart;
-	public ArrayList<SnakeBody> snakeBody = new ArrayList<SnakeBody>();
-	public int coordX;
-	public int coordY;
-	public int rectangleSize;
-	private Color color;
-	private boolean rightDirection = false;
-	private boolean leftDirection = false;
-	private boolean upDirection = false;
-	private boolean downDirection = false;
+	private Color color_;
+	private int coordX_;
+	private int coordY_;
+	private boolean directionRight_ = false;
+	private boolean directionLeft_ = false;
+	private boolean directionUp_ = false;
+	private boolean directionDown_ = false;
+	private int rectangleSize_;
+	private SnakeBody snakeBodyPart_;
+	private ArrayList<SnakeBody> snakeBody_ = new ArrayList<SnakeBody>();
+	
+	public Color GetColor() { return color_; }
+	public int GetCoordX() { return coordX_; }
+	public int GetCoordY() { return coordY_; }
+	public boolean GetDirectionRight() { return directionRight_; }
+	public boolean GetDirectionLeft() { return directionLeft_; }
+	public boolean GetDirectionUp() { return directionUp_; }
+	public boolean GetDirectionDown() { return directionDown_; }
+	public int GetRectangleSize() { return rectangleSize_; }
+	public SnakeBody GetSnakeBodyPart() { return snakeBodyPart_; }
+	public ArrayList<SnakeBody> GetSnakeBody() { return snakeBody_; }
+	
+	public void SetColor(Color color) { color_ = color; }
+	public void SetCoordX(int coordX) { coordX_ = coordX; }
+	public void SetCoordY(int coordY) { coordY_ = coordY; }
+	public void SetDirectionRight(boolean directionRight) { directionRight_ = directionRight; }
+	public void SetDirectionLeft(boolean directionLeft) { directionLeft_ = directionLeft; }
+	public void SetDirectionUp(boolean directionUp) { directionUp_ = directionUp; }
+	public void SetDirectionDown(boolean directionDown) { directionDown_ = directionDown; }
+	public void SetRectangleSize(int rectangleSize) { rectangleSize_ = rectangleSize; }
 
 	public Snake(int coordX, int coordY, Color color) {
-		this.coordX = coordX;
-		this.coordY = coordY;
-		this.rectangleSize = 10;
-		this.color = color;
+		int rectangleSize = 10;
+		
+		SetCoordX(coordX);
+		SetCoordY(coordY);
+		SetRectangleSize(rectangleSize);
+		SetColor(color);
 		AddSnakeBodyComponent();
 	}
 	
 	public Snake(int coordX, int coordY) {
-		this.coordX = coordX;
-		this.coordY = coordY;
-		this.rectangleSize = 10;
-		this.color = Color.blue;
+		int rectangleSize = 10;
+		
+		SetCoordX(coordX);
+		SetCoordY(coordY);
+		SetRectangleSize(rectangleSize);
+		SetColor(Color.BLUE);
 		AddSnakeBodyComponent();
 	}
 	
 	public void AddSnakeBodyComponent() {
-		SnakeBody snakeBodyPart = new SnakeBody(coordX, coordY, rectangleSize, color);
-		this.snakeBody.add(snakeBodyPart);
+		SnakeBody snakeBodyPart = new SnakeBody(GetCoordX(), GetCoordY(), GetRectangleSize(), GetColor());
+		GetSnakeBody().add(snakeBodyPart);
 	}
 	
 	public void DrawSnakeBody(Graphics component) {
-		for(int index = 0; index < this.snakeBody.size(); index++) {
-			this.snakeBody.get(index).DrawComponent(component);
+		for(int index = 0; index < GetSnakeBody().size(); index++) {
+			GetSnakeBody().get(index).DrawComponent(component);
 		}
 	}
 	
 	public void MoveSnake() {
-		if(this.upDirection) {
-			this.coordY--;
-		} else if(this.downDirection) {
-			this.coordY++;
-		} else if(this.leftDirection) {
-			this.coordX--;
-		} else if(this.rightDirection) {
-			this.coordX++;
+		if(GetDirectionUp()) {
+			SetCoordY(GetCoordY() - 1);
+		} else if(GetDirectionDown()) {
+			SetCoordY(GetCoordY() + 1);
+		} else if(GetDirectionLeft()) {
+			SetCoordX(GetCoordX() - 1);
+		} else if(GetDirectionRight()) {
+			SetCoordX(GetCoordX() + 1);
 		}
 		
-		SnakeBody snakeBodyPart = new SnakeBody(this.coordX, this.coordY, this.rectangleSize, this.color);
-		this.snakeBody.add(snakeBodyPart);
+		SnakeBody snakeBodyPart = new SnakeBody(GetCoordX(), GetCoordY(), GetRectangleSize(), GetColor());
+		GetSnakeBody().add(snakeBodyPart);
 		
 		
-		if(this.snakeBody.size() > 1) {
-			this.snakeBody.remove(0);
+		if(GetSnakeBody().size() > 1) {
+			GetSnakeBody().remove(0);
 		}
 	}
 	
 	public void TurnSnake(String direction) {
-		if(direction == "Up" && !this.downDirection) {
-			this.rightDirection = false;
-			this.leftDirection = false;
-			this.upDirection = true;
+		if(direction == "Up" && !GetDirectionDown()) {
+			SetDirectionRight(false);
+			SetDirectionLeft(false);
+			SetDirectionUp(true);
 		}
 		
-		if(direction == "Down" && !this.upDirection) {
-			this.rightDirection = false;
-			this.leftDirection = false;
-			this.downDirection = true;
+		if(direction == "Down" && !GetDirectionUp()) {
+			SetDirectionRight(false);
+			SetDirectionLeft(false);
+			SetDirectionDown(true);
 		}
 		
-		if(direction == "Left" && !this.rightDirection) {
-			this.upDirection = false;
-			this.downDirection = false;
-			this.leftDirection = true;
+		if(direction == "Left" && !GetDirectionRight()) {
+			SetDirectionUp(false);
+			SetDirectionDown(false);
+			SetDirectionLeft(true);
 		}
 		
-		if(direction == "Right" && !this.leftDirection) {
-			this.upDirection = false;
-			this.downDirection = false;
-			this.rightDirection = true;
+		if(direction == "Right" && !GetDirectionLeft()) {
+			SetDirectionUp(false);
+			SetDirectionDown(false);
+			SetDirectionRight(true);
 		}
 	}
 	
 	private SnakeBody GetSnakeHead() {
-		int headPosition = this.snakeBody.size() - 1;
+		int headPosition = GetSnakeBody().size() - 1;
 		
-		return this.snakeBody.get(headPosition);
+		return GetSnakeBody().get(headPosition);
 	}
 	
 	public boolean CheckCollision() {
@@ -106,8 +129,8 @@ public class Snake {
 	}
 	
 	public boolean CheckCollision(int coordX, int coordY) {
-		for(int index = 0; index < snakeBody.size(); index++) {
-			if(snakeBody.get(index).CheckCollision(coordX, coordY)) {
+		for(int index = 0; index < GetSnakeBody().size(); index++) {
+			if(GetSnakeBody().get(index).CheckCollision(coordX, coordY)) {	
 				return true;
 			}
 		}
@@ -118,9 +141,9 @@ public class Snake {
 	private boolean CheckSelfCollision() {
 		int minumumSnakeBodySizeToSelfCollision = 4;
 		
-		if(this.snakeBody.size() > minumumSnakeBodySizeToSelfCollision) {
-			for(int index = 0; index < snakeBody.size() - 2; index++) {
-				if(snakeBody.get(index).CheckCollision(GetSnakeHead().getCoordX(), GetSnakeHead().getCoordY())) {
+		if(GetSnakeBody().size() > minumumSnakeBodySizeToSelfCollision) {
+			for(int index = 0; index < GetSnakeBody().size() - 2; index++) {
+				if(GetSnakeBody().get(index).CheckCollision(GetSnakeHead().GetCoordX(), GetSnakeHead().GetCoordY())) {
 					return true;
 				}
 			}
@@ -134,8 +157,8 @@ public class Snake {
 	public ArrayList<Integer> GetListOfSnakeCoordinatesX() {
 		ArrayList<Integer> coordsX = new ArrayList<Integer>();
 		
-		for(int index = 0; index < this.rectangleSize; index++) {
-			coordsX.add(this.snakeBody.get(index).getCoordX());
+		for(int index = 0; index < GetRectangleSize(); index++) {
+			coordsX.add(GetSnakeBody().get(index).GetCoordX());
 		}
 		
 		return coordsX;
@@ -144,8 +167,8 @@ public class Snake {
 	public ArrayList<Integer> GetListOfSnakeCoordinatesY() {
 		ArrayList<Integer> coordsY = new ArrayList<Integer>();
 		
-		for(int index = 0; index < this.rectangleSize; index++) {
-			coordsY.add(this.snakeBody.get(index).getCoordY());
+		for(int index = 0; index < GetRectangleSize(); index++) {
+			coordsY.add(GetSnakeBody().get(index).GetCoordY());
 		}
 		
 		return coordsY;

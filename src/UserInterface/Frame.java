@@ -1,8 +1,7 @@
 package UserInterface;
-import java.awt.GridLayout;
 import javax.swing.JFrame;
 
-public class Frame extends JFrame{
+public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	public Frame() {
@@ -13,7 +12,6 @@ public class Frame extends JFrame{
 	}
 
 	public void GameWindowInit() {
-		setLayout(new GridLayout(1, 1, 0, 0));
 		GameWindow gameWindow = new GameWindow();
 		add(gameWindow);
 		pack();

@@ -7,42 +7,52 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class AppleHandler {
-	public Apple apple;
-	public ArrayList<Apple> applesList;
-	private Thread thread;
-	private Random randomNumber;
+	private Apple apple_;
+	private ArrayList<Apple> applesList_;
+	private Random randomNumber_;
+	private Thread thread_;
+	
+	public Apple GetApple() {return apple_;}
+	public ArrayList<Apple> GetApplesList() {return applesList_;}
+	public Random GetRandomNumber() {return randomNumber_;}
+	public Thread GetThread() {return thread_;}
+	
+	public void SetApple(Apple apple) {apple_ = apple;}
+	public void SetApplesList(ArrayList<Apple> applesList) {applesList_ = applesList;}
+	public void SetRandomNumber(Random randomNumber) {randomNumber_ = randomNumber;}
+	public void SetThread(Thread thread) {thread_ = thread;}
 
 	public AppleHandler() {
-		applesList = new ArrayList<Apple>();
-		this.StartAppleHandlerThread();
+		SetApplesList(new ArrayList<Apple>());
+		StartAppleHandlerThread();
 	}
 	
 	public void StartAppleHandlerThread() {
-		thread = new Thread("AppleHandler");
-		thread.start();
+		SetThread(new Thread("AppleHandler"));
+		GetThread().start();
 	}
 
 	public void StopAppleHandlerThread() {
 		try {
-			thread.join();
+			GetThread().join();
 		} catch (InterruptedException exception) {
 			exception.printStackTrace();
 		}
 	}
 	
 	private int RandomizeAppleCoordinates(ArrayList<Integer> unavaibleCoords, int maxNumber) {
-		randomNumber = new Random();
-		int drawCoordinate = randomNumber.nextInt(maxNumber);
+		SetRandomNumber(new Random());
+		int drawCoordinate = GetRandomNumber().nextInt(maxNumber);
 		
 		while(unavaibleCoords.contains(drawCoordinate)) {
-			drawCoordinate = randomNumber.nextInt(maxNumber);
+			drawCoordinate = GetRandomNumber().nextInt(maxNumber);
 		}
 		
 		return drawCoordinate;
 	}
 	
 	public void GenerateApple(ArrayList<Integer> unavaibleCoordsX, ArrayList<Integer> unavaibleCoordsY) {
-		if(this.applesList.size() == 0) {
+		if(GetApplesList().size() == 0) {
 			int maxCoordX = 39;
 			int maxCoordY = 39;
 			int appleRectangleSize = 10;
@@ -50,24 +60,24 @@ public class AppleHandler {
 			int coordX = RandomizeAppleCoordinates(unavaibleCoordsX, maxCoordX);
 			int coordY = RandomizeAppleCoordinates(unavaibleCoordsY, maxCoordY);
 			
-			apple = new Apple(coordX, coordY, appleRectangleSize);
-			applesList.add(apple);
+			SetApple(new Apple(coordX, coordY, appleRectangleSize));
+			GetApplesList().add(GetApple());
 		}
 	}
 	
 	public void GameFrame(Snake snake) {
-		for(int index = 0; index < applesList.size(); index++) {
-			if(applesList.get(index).CheckCollision(snake.coordX, snake.coordY)) {
+		for(int index = 0; index < GetApplesList().size(); index++) {
+			if(GetApplesList().get(index).CheckCollision(snake.GetCoordX(), snake.GetCoordY())) {
 				snake.AddSnakeBodyComponent();
-				applesList.remove(index);
+				GetApplesList().remove(index);
 				index--;
 			}
 		}
 	}
 	
 	public void DrawApple(Graphics component) {
-		for(int index = 0; index < applesList.size(); index++) {
-			applesList.get(index).DrawComponent(component);
+		for(int index = 0; index < GetApplesList().size(); index++) {
+			GetApplesList().get(index).DrawComponent(component);
 		}
 	}
 }

@@ -8,11 +8,11 @@ public class Frog extends Components {
 	}
 	
 	public Frog(int coordX, int coordY, int rectangleSize) {
-		super(coordX, coordY, rectangleSize, Color.green);
+		super(coordX, coordY, rectangleSize, Color.GREEN);
 	}
 	
 	public void Move(int coordX, int coordY) {
-		this.setCoordX(coordX);
-		this.setCoordY(coordY);
+		SetCoordX(coordX);
+		SetCoordY(coordY);
 	}
 }

@@ -8,6 +8,6 @@ public class Walls extends Components {
 	}
 	
 	public Walls(int coordX, int coordY, int rectangleSize) {
-		super(coordX, coordY, rectangleSize, Color.gray);
+		super(coordX, coordY, rectangleSize, Color.GRAY);
 	}
 }

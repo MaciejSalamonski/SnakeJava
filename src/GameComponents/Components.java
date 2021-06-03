@@ -3,34 +3,41 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Components implements ComponentsInterface {
-	private int coordX;
-	private int coordY;
-	private int width;
-	private int height;
-	private Color color;
+	private Color color_;
+	private int coordX_;
+	private int coordY_;
+	private int width_;
+	private int height_;
+	
+	public Color GetColor() { return color_; }
+	public int GetCoordX() { return coordX_; }
+	public int GetCoordY() { return coordY_; }
+	public int GetWidth() { return width_; }
+	public int GetHeight() { return height_; }
+	
+	public void SetColor(Color color) { color_ = color; }
+	public void SetCoordX(int coordX) { coordX_ = coordX; }
+	public void SetCoordY(int coordY) { coordY_ = coordY; }
+	public void SetWidth(int width) { width_ = width; }
+	public void SetHeight(int height) { height_ = height; }
 	
 	public Components(int coordX, int coordY, int rectangleSize, Color color) {
-		this.coordX = coordX;
-		this.coordY = coordY;
-		width = rectangleSize;
-		height = rectangleSize;
-		this.color = color;
+		SetCoordX(coordX);
+		SetCoordY(coordY);
+		SetWidth(rectangleSize);
+		SetHeight(rectangleSize);
+		SetColor(color);
 	}
-	
-	public int getCoordX() { return coordX; }
-	public int getCoordY() { return coordY; }
-	public void setCoordX(int coordX) { this.coordX = coordX; }
-	public void setCoordY(int coordY) {this.coordY = coordY; }
 	
 	public void GameFrame() {}
 	
 	public void DrawComponent(Graphics component) {
-		component.setColor(this.color);
-		component.fillRect(coordX * width, coordY * height, width, height);
+		component.setColor(GetColor());
+		component.fillRect(GetCoordX() * GetWidth(), GetCoordY() * GetHeight(), GetWidth(), GetHeight());
 	}
 	
 	public boolean CheckCollision(int coordX, int coordY) {
-		if(this.coordX == coordX && this.coordY == coordY) {
+		if(GetCoordX() == coordX && GetCoordY() == coordY) {	
 			return true;
 		}
 		

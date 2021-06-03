@@ -7,6 +7,6 @@ public class Apple extends Components {
 	}
 	
 	public Apple(int coordX, int coordY, int rectangleSize) {
-		super(coordX, coordY, rectangleSize, Color.red);
+		super(coordX, coordY, rectangleSize, Color.RED);
 	}
 }

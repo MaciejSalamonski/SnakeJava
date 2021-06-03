@@ -8,6 +8,6 @@ public class SnakeBody extends Components {
 	}
 	
 	public SnakeBody(int coordX, int coordY, int rectangleSize) {
-		super(coordX, coordY, rectangleSize, Color.blue);
+		super(coordX, coordY, rectangleSize, Color.BLUE);
 	}
 }
