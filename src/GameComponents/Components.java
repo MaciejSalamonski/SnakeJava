@@ -1,9 +1,11 @@
 package GameComponents;
+
 import java.awt.Color;
 import java.awt.Graphics;
 
 /*
- * Component class.
+ * Component class
+ * 
  * This class implements the interface
  * used in these classes: Apple, Frog, SnakeBody, Walls.
  */
@@ -11,7 +13,8 @@ import java.awt.Graphics;
 public class Components implements ComponentsInterface {
 	
 	/*
-	 * Components class variables:
+	 * Class variables
+	 * 
 	 * color_ - color of component
 	 * coordX_ - X coordinate of a component
 	 * coordY_ - Y coordinate of a component
@@ -46,7 +49,8 @@ public class Components implements ComponentsInterface {
 	public void SetHeight(int height) { height_ = height; }
 	
 	/*
-	 * Components constructor.
+	 * Components constructor
+	 * 
 	 * It it responsible for the appropriate setting of class variables.
 	 */
 	
@@ -59,7 +63,8 @@ public class Components implements ComponentsInterface {
 	}
 	
 	/*
-	 * Method DrawComponent
+	 * DrawComponent method
+	 * 
 	 * It implements an interface method.
 	 * This method is responsible for drawing a component 
 	 * (for example an Apple) of the appropriate color and size.
@@ -71,7 +76,8 @@ public class Components implements ComponentsInterface {
 	}
 	
 	/*
-	 * Method CheckCollision
+	 * CheckCollision method
+	 * 
 	 * This method is responsible for checking whether the collision occurred at a specific point.
 	 */
 	

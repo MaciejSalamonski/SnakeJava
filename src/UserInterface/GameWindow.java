@@ -178,7 +178,7 @@ public class GameWindow extends JPanel implements Runnable {
 			DrawBackground(component);
 			GetSnakePlayer().DrawSnakeBody(component);
 			GetAppleHandler().DrawApple(component);
-			GetWallsHandler().DrawWallsComponents(component);
+			GetWallsHandler().DrawWalls(component);
 			GetFrogHandler().DrawFrog(component);
 		} else {
 			ShowBestResult(component);

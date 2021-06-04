@@ -1,8 +1,10 @@
 package GameComponents;
+
 import java.awt.Color;
 
 /*
- * Apple class.
+ * Apple class
+ * 
  * The class is used to create Apple objects.
  * Apple class contains two constructors.
  */
@@ -10,8 +12,10 @@ import java.awt.Color;
 public class Apple extends Components {
 	
 	/*
-	 * First constructor of an Apple class.
+	 * First constructor of an Apple class
+	 * 
 	 * This constructor initializes four parameters.
+	 * 
 	 * coordX - X coordinate of an apple.
 	 * coordY - Y coordinate of an apple.
 	 * rectangleSize - The size of an apple on the board.
@@ -23,7 +27,8 @@ public class Apple extends Components {
 	}
 	
 	/*
-	 * Second constructor of an Apple class.
+	 * Second constructor of an Apple class
+	 * 
 	 * This constructor initializes the same parameters as the first constructor.
 	 * The main difference is that the appleColor parameter is set to RED 
 	 * (for example) by default. 

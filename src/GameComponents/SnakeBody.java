@@ -1,8 +1,10 @@
 package GameComponents;
+
 import java.awt.Color;
 
 /*
- * SnakeBody class.
+ * SnakeBody class
+ * 
  * This class is used to create snake body parts.
  * SnakeBody class contains two constructors.
  */
@@ -10,8 +12,10 @@ import java.awt.Color;
 public class SnakeBody extends Components {
 
 	/*
-	 * First constructor of a SnakeBody class.
+	 * First constructor of a SnakeBody class
+	 * 
 	 * This constructor initializes four parameters.
+	 * 
 	 * coordX - X coordinate of a part of snake body.
 	 * coordY - Y coordinate of a part of snake body.
 	 * rectangleSize - The size of a part of a snake body on the board.
@@ -23,7 +27,8 @@ public class SnakeBody extends Components {
 	}
 	
 	/*
-	 * Second constructor of a SnakeBody class.
+	 * Second constructor of a SnakeBody class
+	 * 
 	 * This constructor initializes the same parameters as the first constructor.
 	 * The main difference is that the snakeBodyColor parameter is set to BLUE 
 	 * (for example) by default. 
