@@ -43,8 +43,8 @@ public class GameWindow extends JPanel implements Runnable {
 	 * serialVersionUID - Default variable required by compiler
 	 */
 	
-	public final int width_ = 400;
-	public final int height_ = 400;
+	private final int width_ = 400;
+	private final int height_ = 400;
 	private Thread thread_;
 	private int gameFrames_ = 0;
 	private int bestResult_ = 0;
@@ -112,7 +112,7 @@ public class GameWindow extends JPanel implements Runnable {
 	 * and the main thread of the program is created.
 	 */
 	
-	public void StartGame() {
+	private void StartGame() {
 		int snakeStartCoordX = 20;
 		int snakeStartCoordY = 20;
 		int wallsNumber = 15;
@@ -138,7 +138,7 @@ public class GameWindow extends JPanel implements Runnable {
 	 * Method that stops the game and ends the main thread.
 	 */
 	
-	public void StopGame() {
+	private void StopGame() {
 		SetGameState(false);
 		
 		GetAppleHandler().StopAppleHandlerThread();

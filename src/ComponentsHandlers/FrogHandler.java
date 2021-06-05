@@ -64,7 +64,7 @@ public class FrogHandler {
 	 * Creation and start of thread operation.
 	 */
 
-	public void StartFrogHandlerThread() {
+	private void StartFrogHandlerThread() {
 		SetThread(new Thread("Frog Handler"));
 		GetThread().start();
 	}
@@ -159,7 +159,7 @@ public class FrogHandler {
 	 * of all generated walls
 	 */
 	
-	public boolean CheckCollision(int coordX, int coordY, WallsHandler walls) {
+	private boolean CheckCollision(int coordX, int coordY, WallsHandler walls) {
 		if(CheckWallsCollision(coordX, coordY, walls)) {	
 			return true;
 		}

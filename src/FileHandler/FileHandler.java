@@ -58,7 +58,7 @@ public class FileHandler {
 	 * Creation and start of thread operation.
 	 */
 	
-	public void StartFileHandlerThread() {
+	private void StartFileHandlerThread() {
 		SetThread(new Thread("File Handler"));
 		GetThread().start();
 	}

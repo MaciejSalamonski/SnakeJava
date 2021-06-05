@@ -72,7 +72,7 @@ public class WallsHandler {
 	 * Method that generate boarders on the board.
 	 */
 	
-	public void GenerateBoarders() {
+	private void GenerateBoarders() {
 		int rectangleSize = 10;
 		int maximumBoarderResolution = 40;
 		int maximumHeightOfBoarder = 40;

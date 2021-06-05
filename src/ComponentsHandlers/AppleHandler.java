@@ -66,7 +66,7 @@ public class AppleHandler {
 	 * Creation and start of thread operation.
 	 */
 	
-	public void StartAppleHandlerThread() {
+	private void StartAppleHandlerThread() {
 		SetThread(new Thread("AppleHandler"));
 		GetThread().start();
 	}

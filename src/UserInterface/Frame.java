@@ -38,7 +38,7 @@ public class Frame extends JFrame {
 	 * Initializing game window.
 	 */
 
-	public void GameWindowInit() {
+	private void GameWindowInit() {
 		GameWindow gameWindow = new GameWindow();
 		add(gameWindow);
 		pack();
