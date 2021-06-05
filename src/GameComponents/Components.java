@@ -70,6 +70,7 @@ public class Components implements ComponentsInterface {
 	 * (for example an Apple) of the appropriate color and size.
 	 */
 	
+	@Override
 	public void DrawComponent(Graphics component) {
 		component.setColor(GetColor());
 		component.fillRect(GetCoordX() * GetWidth(), GetCoordY() * GetHeight(), GetWidth(), GetHeight());

@@ -16,7 +16,33 @@ import ComponentsHandlers.FrogHandler;
 import ComponentsHandlers.WallsHandler;
 import FileHandler.FileHandler;
 
+/*
+ * GameWindows class
+ * 
+ * Class responsible for creating the main program window. The class
+ * extends JPanel and implements Runnable interface.
+ */
+
 public class GameWindow extends JPanel implements Runnable {
+	
+	/*
+	 * Class variables
+	 * 
+	 * width_ - board width
+	 * height_ - board height
+	 * thread_ - thread object
+	 * gameFrames_ - game frames counter
+	 * bestResult_ - best player result
+	 * gameState_ - game state 
+	 * snakePlayer_ - snake object
+	 * pressedKey_ - key object
+	 * appleHandler_ - apple handler object
+	 * fileHandler_ - file handler object
+	 * frogHandler_ - frog handler object
+	 * wallsHandler_ - walls handler object
+	 * serialVersionUID - Default variable required by compiler
+	 */
+	
 	public final int width_ = 400;
 	public final int height_ = 400;
 	private Thread thread_;
@@ -29,6 +55,11 @@ public class GameWindow extends JPanel implements Runnable {
 	private FileHandler fileHandler_;
 	private FrogHandler frogHandler_;
 	private WallsHandler wallsHandler_;
+	private static final long serialVersionUID = 1L;
+	
+	/*
+	 * Getters
+	 */
 	
 	public int GetWidth() { return width_; }
 	public int GetHeight() { return height_; }
@@ -43,6 +74,10 @@ public class GameWindow extends JPanel implements Runnable {
 	public FrogHandler GetFrogHandler() { return frogHandler_; }
 	public WallsHandler GetWallsHandler() { return wallsHandler_; }
 	
+	/*
+	 * Setters
+	 */
+	
 	public void SetThread(Thread thread) { thread_ = thread; }
 	public void SetGameFrames(int gameFrames) { gameFrames_ = gameFrames; }
 	public void SetBestResult(int bestResult) { bestResult_ = bestResult; }
@@ -54,6 +89,14 @@ public class GameWindow extends JPanel implements Runnable {
 	public void SetFrogHandler(FrogHandler frogHandler) { frogHandler_ = frogHandler;}
 	public void SetWallsHandler(WallsHandler wallsHandler) { wallsHandler_ = wallsHandler; }
 	
+	/*
+	 * GameWindow constructor
+	 * 
+	 * The Key listener is added in the constructor.
+	 * Additionally, inside the constructor, the size of the board
+	 * is set and the method that starts the game is called.
+	 */
+	
 	public GameWindow() {
 		setPreferredSize(new Dimension(GetWidth(), GetHeight()));
 		setFocusable(true);
@@ -61,6 +104,13 @@ public class GameWindow extends JPanel implements Runnable {
 		addKeyListener(GetPressedKey());
 		StartGame();
 	}
+	
+	/*
+	 * StartGame method
+	 * 
+	 * Inside this method, the components of the game are initialized
+	 * and the main thread of the program is created.
+	 */
 	
 	public void StartGame() {
 		int snakeStartCoordX = 20;
@@ -82,6 +132,12 @@ public class GameWindow extends JPanel implements Runnable {
 		GetThread().start();
 	}
 	
+	/*
+	 * StopGame method
+	 * 
+	 * Method that stops the game and ends the main thread.
+	 */
+	
 	public void StopGame() {
 		SetGameState(false);
 		
@@ -89,6 +145,12 @@ public class GameWindow extends JPanel implements Runnable {
 		GetFrogHandler().StopFrogHandlerThread();
 		GetFileHandler().StopFileHandlerThread();
 	}
+	
+	/*
+	 * GameFrame method
+	 * 
+	 * Method that checks the action in each frame, e.g. in case of collision.
+	 */
 	
 	private void GameFrame() {
 		int maxGameFrames = 300000;
@@ -113,6 +175,13 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 	
+	/*
+	 * run method
+	 * 
+	 * Method that acts as game loop.
+	 */
+	
+	@Override
 	public void run() {
 		while(GetGameState()) {
 			GameFrame();
@@ -120,12 +189,26 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 	
+	/*
+	 * DrawBackground method
+	 * 
+	 * Method that draws a black board with the given dimensions.
+	 * 
+	 * component - graphics object
+	 */
+	
 	private void DrawBackground(Graphics component) { 
 		component.clearRect(0, 0, GetWidth(), GetHeight());
 		component.fillRect(0, 0, GetWidth(), GetHeight());
 	}
 	
-	private void WriteBestResultToFile() {
+	/*
+	 * WriteBestResult method
+	 * 
+	 * Method used to write the best result to a file (BestResult.txt)
+	 */
+	
+	private void WriteBestResult() {
 		try {
 			GetFileHandler().WriteBestResultToFile(GetBestResult());
 		} catch (IOException exception) {
@@ -133,7 +216,16 @@ public class GameWindow extends JPanel implements Runnable {
 		}
 	}
 	
-	private void ShowBestResult(Graphics component) {
+	/*
+	 * ShowResult method
+	 * 
+	 * Method that shows the player number of points he has score,
+	 * the best score, the key that needs to be pressed to restart the game.
+	 * 
+	 * component - graphic object
+	 */
+	
+	private void ShowResult(Graphics component) {
 		int bestResultHeight = 220;
 		int bigFontSize = 30;
 		int centerAlignment = 2; 
@@ -162,7 +254,7 @@ public class GameWindow extends JPanel implements Runnable {
 			component.drawString(gameOverMessage, startPosition - (metrices.stringWidth(gameOverMessage) / centerAlignment), gameOverHeight);
 			component.drawString(newRecordMessage, startPosition - (metrices.stringWidth(newRecordMessage) / centerAlignment), newRecordHeight);
 			SetBestResult(playerResult);
-			WriteBestResultToFile();	
+			WriteBestResult();	
 		} else {
 			component.drawString(gameOverMessage, startPosition - (metrices.stringWidth(gameOverMessage) / centerAlignment), gameOverHeight);
 		}
@@ -173,6 +265,15 @@ public class GameWindow extends JPanel implements Runnable {
 		component.drawString(restartGameMessage, startPosition - secondMetrices.stringWidth(restartGameMessage) / centerAlignment, restartGameHeight);
 	}
 	
+	/*
+	 * paint method
+	 * 
+	 * Method that draws all game components.
+	 * 
+	 * component - graphic object
+	 */
+	
+	@Override
 	public void paint(Graphics component) {
 		if(GetGameState()) {
 			DrawBackground(component);
@@ -181,14 +282,52 @@ public class GameWindow extends JPanel implements Runnable {
 			GetWallsHandler().DrawWalls(component);
 			GetFrogHandler().DrawFrog(component);
 		} else {
-			ShowBestResult(component);
+			ShowResult(component);
 		}
 	}
 	
+	/*
+	 * Key class
+	 * 
+	 * Class that implements key listener.
+	 * Used to get key events from the keyboard.
+	 */
+	
 	private class Key implements KeyListener {
+		
+		/*
+		 * keyTyped method
+		 * 
+		 * Method keyTyped must be overridden (empty method body)
+		 * 
+		 * event - KeyEvent object
+		 */
+		
+		@Override
 		public void keyTyped(KeyEvent event) {}
+		
+		/*
+		 * keyReleased method
+		 * 
+		 * Method keyReleased must be overridden (empty method body)
+		 * 
+		 * event - KeyEvent object
+		 */
+		
+		@Override
 		public void keyReleased(KeyEvent event) {}
 		
+		/*
+		 * keyPressed method
+		 * 
+		 * Overriding the keyPressed method.
+		 * Method that changes the direction of the snake and
+		 * restart the game by pressing the appropriate keys.
+		 * 
+		 * event - KeyEvent object
+		 */
+		
+		@Override
 		public void keyPressed(KeyEvent event) {
 			String restartGameKey = "Space";
 			String keyPressed = KeyEvent.getKeyText(event.getKeyCode());
